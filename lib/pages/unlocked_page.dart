@@ -2,6 +2,7 @@ import 'package:digi_cap/components/past_capsule_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../model/capsule_db_manager.dart';
 
@@ -19,6 +20,10 @@ class _UnlockedPageState extends State<UnlockedPage> {
       listen: false,
     ).getPastCapsules().removeAt(index);
   }
+
+  final capsuleStream = Supabase.instance.client
+      .from('capsules')
+      .stream(primaryKey: ['id']);
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +47,29 @@ class _UnlockedPageState extends State<UnlockedPage> {
               Container(
                 width: 390,
                 height: 600,
-                child: ListView.builder(
-                  itemCount: capsuleDbManager.getPastCapsulesLength(),
-                  itemBuilder: (context, index) {
-                    return PastCapsuleTile(
-                      pastCapsule: capsuleDbManager.getPastCapsules()[index],
-                      delete: (_) {
-                        setState(() {
-                          deleteCapsule(index);
-                        });
+                child: StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: capsuleStream,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final capsules = snapshot.data!;
+
+                    return ListView.builder(
+                      itemCount: capsules.length,
+                      itemBuilder: (context, index) {
+                        final capsule = capsules[index];
+                        return PastCapsuleTile(
+                          title: capsule['title'],
+                          content: capsule['content'],
+                          creationDate: capsule['created_at'],
+                          openDate: capsule['open_at'],
+                          delete: (_) {
+                            setState(() {
+                              deleteCapsule(index);
+                            });
+                          },
+                        );
                       },
                     );
                   },

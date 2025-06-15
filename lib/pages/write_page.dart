@@ -49,7 +49,7 @@ class _WritePageState extends State<WritePage> {
     Provider.of<CapsuleDbManager>(
       context,
       listen: false,
-    ).addFutureCapsule(timeCapsule);
+    ).addCapsule(timeCapsule);
 
     // Close the confirmation dialog first (DialogBox)
     Navigator.of(context).pop();

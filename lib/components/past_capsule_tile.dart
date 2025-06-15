@@ -1,3 +1,4 @@
+import 'package:digi_cap/pages/home_page.dart';
 import 'package:digi_cap/pages/view_past_capsule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -6,9 +7,19 @@ import 'package:google_fonts/google_fonts.dart';
 import '../model/time_capsule.dart';
 
 class PastCapsuleTile extends StatelessWidget {
-  TimeCapsule pastCapsule;
+  String title;
+  String content;
+  String creationDate;
+  String openDate;
   Function(BuildContext)? delete;
-  PastCapsuleTile({super.key, required this.pastCapsule, required this.delete});
+  PastCapsuleTile({
+    super.key,
+    required this.title,
+    required this.content,
+    required this.creationDate,
+    required this.openDate,
+    required this.delete,
+  });
 
   String truncatedText(String text, int maxChars) {
     if (text.length <= maxChars) {
@@ -24,9 +35,7 @@ class PastCapsuleTile extends StatelessWidget {
       onTap:
           () => Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ViewPastCapsule(pastCapsule: pastCapsule),
-            ),
+            MaterialPageRoute(builder: (context) => HomePage()),
           ),
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 25.0),
@@ -58,7 +67,7 @@ class PastCapsuleTile extends StatelessWidget {
                   child: Image.asset("lib/images/tc-green-32.png"),
                 ),
                 Text(
-                  truncatedText(pastCapsule.getTitle(), 25),
+                  truncatedText(title, 25),
                   style: GoogleFonts.openSans(
                     color: Colors.white,
                     fontSize: 15,
@@ -68,7 +77,7 @@ class PastCapsuleTile extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Text(
-                    pastCapsule.getOpenDate(),
+                    openDate,
                     style: GoogleFonts.openSans(
                       color: Colors.white,
                       fontSize: 12,

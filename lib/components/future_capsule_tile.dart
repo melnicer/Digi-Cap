@@ -62,7 +62,7 @@ class FutureCapsuleTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Text(
-                  futureCapsule.getOpenDate(),
+                  futureCapsule.getOpenDate().toString(),
                   style: GoogleFonts.openSans(
                     color: Colors.white,
                     fontSize: 12,

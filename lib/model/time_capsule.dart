@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
 
 class TimeCapsule {
-  String title = "";
-  String content = "";
+  String title;
+  String content;
   DateTime creationDate;
   DateTime? openDate;
 
@@ -26,8 +26,7 @@ class TimeCapsule {
     return stringCreationDate;
   }
 
-  String getOpenDate() {
-    String stringOpenDate = DateFormat('yyyy-MM-dd').format(openDate!);
-    return stringOpenDate;
+  DateTime? getOpenDate() {
+    return openDate;
   }
 }

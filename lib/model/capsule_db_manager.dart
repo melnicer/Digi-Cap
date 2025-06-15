@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'time_capsule.dart';
 
 class CapsuleDbManager extends ChangeNotifier {
   List<TimeCapsule> futureCapsules = [];
   List<TimeCapsule> pastCapsules = [];
+
+  void addCapsule(TimeCapsule capsule) async {
+    await Supabase.instance.client.from('capsules').insert({
+      'title': capsule.title,
+      'content': capsule.getContent(),
+      'open_at': capsule.getOpenDate()?.toIso8601String(),
+    });
+  }
 
   void addFutureCapsule(TimeCapsule capsule) {
     futureCapsules.add(capsule);
